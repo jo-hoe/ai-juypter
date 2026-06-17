@@ -1,4 +1,5 @@
 """Tests for Pydantic model serialisation round-trips and validation."""
+
 import pytest
 from pydantic import ValidationError
 

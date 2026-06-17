@@ -1,0 +1,8 @@
+# Force LF line endings for all text files in the repository.
+# This prevents Windows CRLF from causing ruff format failures in CI.
+* text=auto eol=lf
+
+# Explicitly mark binary files
+*.png binary
+*.jpg binary
+*.whl binary

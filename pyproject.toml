@@ -19,6 +19,7 @@ dev = [
     "pytest-cov",
     "mypy",
     "ruff",
+    "pre-commit",
 ]
 
 [tool.setuptools.packages.find]

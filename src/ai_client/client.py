@@ -7,6 +7,7 @@ Design constraints:
 - ``stream_chat`` yields ``str`` deltas using the SDK's ``text_stream``.
 - All SDK errors are mapped to package-local ``APIError``.
 """
+
 from __future__ import annotations
 
 from collections.abc import Iterator

@@ -4,6 +4,7 @@
 declared with ``frozen=True`` via Pydantic so that accidental mutation is a
 type error at both static analysis time and at runtime.
 """
+
 from __future__ import annotations
 
 import os

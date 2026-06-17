@@ -3,6 +3,7 @@
 No monkeypatching of os.environ.  ProxyConfig is constructed directly with
 explicit values so the tests are hermetic.
 """
+
 import os
 
 import pytest
