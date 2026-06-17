@@ -6,7 +6,7 @@ anthropic>=0.40
 pydantic>=2.0
 
 # Jupyter stack
-jupyterlab>=4.0
+jupyterlab>=4.5.8
 jupyter-ai>=3.0.0
 jupyter-ai-magics>=2.0
 langchain-anthropic>=1.4.6
