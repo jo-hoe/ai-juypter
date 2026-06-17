@@ -1,0 +1,13 @@
+# Install the local package in editable mode plus dev extras
+-e .[dev]
+
+# Runtime dependencies (also declared in pyproject.toml — pip deduplicates)
+anthropic>=0.40
+pydantic>=2.0
+
+# Jupyter stack
+jupyterlab>=4.0
+jupyter-ai>=2.0
+jupyter-ai-magics>=2.0
+langchain-anthropic>=0.1
+ipywidgets
