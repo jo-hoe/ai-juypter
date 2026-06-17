@@ -13,7 +13,7 @@ import pytest
 from ai_client.client import AIClient
 from ai_client.config import ProxyConfig
 from ai_client.exceptions import APIError
-from ai_client.models import ChatMessage, ChatRequest, ChatResponse, ContentBlock
+from ai_client.models import ChatMessage, ChatRequest, ChatResponse
 
 
 def _make_config() -> ProxyConfig:
