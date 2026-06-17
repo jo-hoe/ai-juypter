@@ -4,6 +4,7 @@ All models use ``model_config = ConfigDict(strict=True)`` to reject unexpected
 fields and implicit type coercions, keeping the type boundary between the
 caller and the SDK precise.
 """
+
 from __future__ import annotations
 
 from pydantic import BaseModel, ConfigDict, Field

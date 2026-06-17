@@ -3,6 +3,7 @@
 The Anthropic SDK is mocked at the class level — ProxyConfig is constructed
 directly (no os.environ side effects).
 """
+
 from __future__ import annotations
 
 from collections.abc import Iterator
@@ -153,9 +154,7 @@ class TestAIClientStreamChat:
         assert result == chunks
 
     @patch("ai_client.client.anthropic.Anthropic")
-    def test_stream_chat_returns_iterator(
-        self, mock_anthropic_cls: MagicMock
-    ) -> None:
+    def test_stream_chat_returns_iterator(self, mock_anthropic_cls: MagicMock) -> None:
         mock_stream = MagicMock()
         mock_stream.__enter__ = MagicMock(return_value=mock_stream)
         mock_stream.__exit__ = MagicMock(return_value=False)
