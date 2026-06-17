@@ -11,6 +11,7 @@ Design constraints:
 from __future__ import annotations
 
 from collections.abc import Iterator
+from typing import Literal, cast
 
 import anthropic
 
@@ -18,13 +19,18 @@ from .config import ProxyConfig
 from .exceptions import APIError
 from .models import ChatMessage, ChatRequest, ChatResponse, ContentBlock
 
+_VALID_ROLES = frozenset({"user", "assistant"})
+
 
 def _build_sdk_messages(
     messages: list[ChatMessage],
 ) -> list[anthropic.types.MessageParam]:
     """Convert ``ChatMessage`` objects to the SDK's wire format."""
     return [
-        anthropic.types.MessageParam(role=msg.role, content=msg.content)
+        anthropic.types.MessageParam(
+            role=cast(Literal["user", "assistant"], msg.role),
+            content=msg.content,
+        )
         for msg in messages
     ]
 
@@ -55,16 +61,20 @@ class AIClient:
         Raises:
             APIError: When the upstream API returns an error.
         """
-        kwargs: dict[str, object] = {
-            "model": request.model,
-            "max_tokens": request.max_tokens,
-            "messages": _build_sdk_messages(request.messages),
-        }
-        if request.system is not None:
-            kwargs["system"] = request.system
-
         try:
-            sdk_response = self._sdk.messages.create(**kwargs)  # type: ignore[arg-type]
+            if request.system is not None:
+                sdk_response = self._sdk.messages.create(
+                    model=request.model,
+                    max_tokens=request.max_tokens,
+                    messages=_build_sdk_messages(request.messages),
+                    system=request.system,
+                )
+            else:
+                sdk_response = self._sdk.messages.create(
+                    model=request.model,
+                    max_tokens=request.max_tokens,
+                    messages=_build_sdk_messages(request.messages),
+                )
         except anthropic.APIStatusError as exc:
             raise APIError(str(exc), status_code=exc.status_code) from exc
         except anthropic.APIConnectionError as exc:
@@ -84,16 +94,21 @@ class AIClient:
         Raises:
             APIError: When the upstream API returns an error.
         """
-        kwargs: dict[str, object] = {
-            "model": request.model,
-            "max_tokens": request.max_tokens,
-            "messages": _build_sdk_messages(request.messages),
-        }
-        if request.system is not None:
-            kwargs["system"] = request.system
-
         try:
-            with self._sdk.messages.stream(**kwargs) as stream:  # type: ignore[arg-type]
+            if request.system is not None:
+                stream_ctx = self._sdk.messages.stream(
+                    model=request.model,
+                    max_tokens=request.max_tokens,
+                    messages=_build_sdk_messages(request.messages),
+                    system=request.system,
+                )
+            else:
+                stream_ctx = self._sdk.messages.stream(
+                    model=request.model,
+                    max_tokens=request.max_tokens,
+                    messages=_build_sdk_messages(request.messages),
+                )
+            with stream_ctx as stream:
                 yield from stream.text_stream
         except anthropic.APIStatusError as exc:
             raise APIError(str(exc), status_code=exc.status_code) from exc

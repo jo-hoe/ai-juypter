@@ -1,0 +1,13 @@
+FROM python:3.11-slim
+
+WORKDIR /workspace
+
+COPY . .
+
+RUN pip install -e .[dev] -q
+
+CMD ["bash", "-c", \
+    "echo '=== ruff lint ===' && ruff check src tests && \
+     echo '=== ruff format ===' && ruff format --check src tests && \
+     echo '=== mypy ===' && mypy src/ai_client tests && \
+     echo '=== pytest ===' && pytest -v --cov=ai_client --cov-report=term-missing --cov-fail-under=90"]

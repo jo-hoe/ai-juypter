@@ -1,4 +1,4 @@
-.PHONY: all install test lint format type-check check pre-commit clean
+.PHONY: all install test lint format type-check check pre-commit ci clean
 
 all: install check
 
@@ -22,6 +22,10 @@ check: lint type-check test
 
 pre-commit:
 	pre-commit run --all-files
+
+ci:
+	docker build -f Dockerfile.ci -t ai-juypter-ci .
+	docker run --rm ai-juypter-ci
 
 clean:
 	pip uninstall -y ai-client

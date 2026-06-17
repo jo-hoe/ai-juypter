@@ -44,7 +44,7 @@ class TestProxyConfigConstruction:
     def test_frozen_config_is_immutable(self) -> None:
         config = ProxyConfig(auth_token="sk-test")
         with pytest.raises((TypeError, ValidationError)):
-            config.auth_token = "new-value"  # type: ignore[misc]
+            config.auth_token = "new-value"  # noqa: E501 — frozen enforced at runtime
 
     def test_base_url_str_strips_trailing_slash(self) -> None:
         config = ProxyConfig(
@@ -73,7 +73,7 @@ class TestProxyConfigFromEnv:
 
         Skipped when ANTHROPIC_AUTH_TOKEN happens to be set in the test runner.
         """
-        if os.environ.get("ANTHROPIC_AUTH_TOKEN"):
+        if os.environ.get("ANTHROPIC_AUTH_TOKEN"):  # pragma: no cover
             pytest.skip("ANTHROPIC_AUTH_TOKEN is set in the environment; skipping.")
         with pytest.raises(ConfigurationError, match="ANTHROPIC_AUTH_TOKEN"):
             ProxyConfig.from_env()
